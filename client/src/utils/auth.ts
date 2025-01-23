@@ -1,31 +1,60 @@
-import { JwtPayload, jwtDecode } from 'jwt-decode';
+import jwtDecode from 'jwt-decode';  // You may need to install this library (npm install jwt-decode)
 
 class AuthService {
+  // Method to get the decoded token (i.e., the user's profile)
   getProfile() {
-    // TODO: return the decoded token
+    const token = this.getToken(); // Get the token from local storage
+    if (token) {
+      try {
+        return jwtDecode(token);  // Decode the JWT token to access the payload (user data)
+      } catch (error) {
+        console.error('Failed to decode token', error);
+        return null;
+      }
+    }
+    return null;
   }
 
+  // Method to check if the user is logged in (if a valid token exists in localStorage)
   loggedIn() {
-    // TODO: return a value that indicates if the user is logged in
+    const token = this.getToken(); // Get the token from local storage
+    if (token) {
+      return !this.isTokenExpired(token); // Return false if the token is expired, otherwise true
+    }
+    return false; // If there is no token, the user is not logged in
   }
   
+  // Method to check if the JWT token is expired
   isTokenExpired(token: string) {
-    // TODO: return a value that indicates if the token is expired
+    try {
+      const decoded: JwtPayload = jwtDecode(token);  // Decode the token
+      const expiry = decoded.exp as number;  // Extract the expiration time
+      if (expiry < Date.now() / 1000) {  // Compare it to the current time (in seconds)
+        return true;  // The token has expired
+      }
+      return false;  // The token is valid
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return true;  // If decoding fails, treat it as expired
+    }
   }
 
+  // Method to retrieve the token from localStorage
   getToken(): string {
-    // TODO: return the token
+    return localStorage.getItem('token') || ''; // Return the stored token (or empty string if not found)
   }
 
+  // Method to log in: Set the token to localStorage and redirect to the home page
   login(idToken: string) {
-    // TODO: set the token to localStorage
-    // TODO: redirect to the home page
+    localStorage.setItem('token', idToken);  // Store the token in local storage
+    window.location.href = '/';  // Redirect to the home page (you may want to adjust this to match your app's flow)
   }
 
+  // Method to log out: Remove the token from localStorage and redirect to the login page
   logout() {
-    // TODO: remove the token from localStorage
-    // TODO: redirect to the login page
+    localStorage.removeItem('token');  // Remove the token from localStorage
+    window.location.href = '/login';  // Redirect to the login page (adjust based on your app's structure)
   }
 }
 
-export default new AuthService();
+export default new AuthService();  // Create and export an instance of the AuthService class
