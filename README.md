@@ -67,3 +67,11 @@ Contributions are welcome! Here's how you can help:
 ## License ⚖️
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+<img width="847" alt="image" src="https://github.com/user-attachments/assets/c5283df3-ec15-4764-8d5c-a50319860453" />
+<img width="385" alt="image" src="https://github.com/user-attachments/assets/7e6bfbf1-47ff-417f-9209-0c7e2d53afa8" />
+<img width="503" alt="image" src="https://github.com/user-attachments/assets/2c2e09ea-09b8-40b0-9861-1c5d8dcda164" />
+
+
+
