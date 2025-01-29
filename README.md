@@ -4,12 +4,11 @@
 
 This project implements user authentication using JWT (JSON Web Tokens), allowing users to securely sign up, log in, and access protected routes. It leverages Node.js and Express.js on the backend, with a database (like PostgreSQL) to store user credentials and information. The front end includes forms for registration and login, while the server handles authentication logic, such as token generation and validation.
 
-**Live page**
-https://keymaster-8wy8.onrender.com
-Seeded username and password
-  { username: 'JollyGuru', password: 'password' },
-  { username: 'SunnyScribe', password: 'password' },
-  { username: 'RadiantComet', password: 'password' },
+**Live page** https://keymaster-8wy8.onrender.com
+
+**To log in use Username** :JollyGuru, SunnyScribe, RadiantComet
+
+**password** :password
 
 🚀 **Main Features**:
 - User sign-up and login with JWT authentication 🔑 ✨
