@@ -1,60 +1,66 @@
-import jwtDecode from 'jwt-decode';  // You may need to install this library (npm install jwt-decode)
+// Importing specific types and functions from the 'jwt-decode' library.
+// JwtPayload: A type definition representing the structure of a JSON Web Token payload.
+// jwtDecode: A function used to decode a JSON Web Token (JWT) and extract its payload.
+import { type JwtPayload, jwtDecode } from 'jwt-decode';
+import type { UserData } from '../interfaces/UserData';
 
 class AuthService {
-  // Method to get the decoded token (i.e., the user's profile)
   getProfile() {
-    const token = this.getToken(); // Get the token from local storage
+    console.log('Getting user profile...');
+    const token = this.getToken();
     if (token) {
-      try {
-        return jwtDecode(token);  // Decode the JWT token to access the payload (user data)
-      } catch (error) {
-        console.error('Failed to decode token', error);
-        return null;
-      }
+      const decodedProfile = jwtDecode<UserData>(token);
+      console.log('Decoded profile:', decodedProfile);
+      return decodedProfile;
+    } else {
+      console.log('No token found, unable to decode profile');
+      return null;
     }
-    return null;
   }
 
-  // Method to check if the user is logged in (if a valid token exists in localStorage)
   loggedIn() {
-    const token = this.getToken(); // Get the token from local storage
-    if (token) {
-      return !this.isTokenExpired(token); // Return false if the token is expired, otherwise true
-    }
-    return false; // If there is no token, the user is not logged in
+    const token = this.getToken();
+    const isLoggedIn = !!token && !this.isTokenExpired(token);
+    console.log('User logged in:', isLoggedIn);
+    return isLoggedIn;
   }
-  
-  // Method to check if the JWT token is expired
+
   isTokenExpired(token: string) {
+    console.log('Checking if token is expired...');
     try {
-      const decoded: JwtPayload = jwtDecode(token);  // Decode the token
-      const expiry = decoded.exp as number;  // Extract the expiration time
-      if (expiry < Date.now() / 1000) {  // Compare it to the current time (in seconds)
-        return true;  // The token has expired
+      const decoded = jwtDecode<JwtPayload>(token);
+      console.log('Decoded token:', decoded);
+      // Check if the decoded token has an 'exp' (expiration) property and if it is less than the current time in seconds.
+      if (decoded?.exp && decoded?.exp < Date.now() / 1000) {
+        console.log('Token is expired');
+        return true;
       }
-      return false;  // The token is valid
-    } catch (error) {
-      console.error('Error decoding token:', error);
-      return true;  // If decoding fails, treat it as expired
+      console.log('Token is valid');
+      return false;
+    } catch (err) {
+      // If decoding fails (e.g., due to an invalid token format), catch the error and return false.
+      console.error('Error decoding token:', err);
+      return false;
     }
   }
 
-  // Method to retrieve the token from localStorage
   getToken(): string {
-    return localStorage.getItem('token') || ''; // Return the stored token (or empty string if not found)
+    const loggedUser = localStorage.getItem('id_token') || '';
+    console.log('Retrieved token from localStorage:', loggedUser);
+    return loggedUser;
   }
 
-  // Method to log in: Set the token to localStorage and redirect to the home page
   login(idToken: string) {
-    localStorage.setItem('token', idToken);  // Store the token in local storage
-    window.location.href = '/';  // Redirect to the home page (you may want to adjust this to match your app's flow)
+    console.log('Logging in with token:', idToken);
+    localStorage.setItem('id_token', idToken);
+    window.location.assign('/');
   }
 
-  // Method to log out: Remove the token from localStorage and redirect to the login page
   logout() {
-    localStorage.removeItem('token');  // Remove the token from localStorage
-    window.location.href = '/login';  // Redirect to the login page (adjust based on your app's structure)
+    console.log('Logging out...');
+    localStorage.removeItem('id_token');
+    window.location.assign('/');
   }
 }
 
-export default new AuthService();  // Create and export an instance of the AuthService class
+export default new AuthService();
