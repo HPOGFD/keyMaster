@@ -6,6 +6,10 @@ This project implements user authentication using JWT (JSON Web Tokens), allowin
 
 **Live page**
 https://keymaster-8wy8.onrender.com
+Seeded username and password
+  { username: 'JollyGuru', password: 'password' },
+  { username: 'SunnyScribe', password: 'password' },
+  { username: 'RadiantComet', password: 'password' },
 
 🚀 **Main Features**:
 - User sign-up and login with JWT authentication 🔑 ✨
