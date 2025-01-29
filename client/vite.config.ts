@@ -12,7 +12,7 @@ export default defineConfig({
         secure: false,
       },
       '/auth': {
-        target: 'http://localhost:3001',
+        target: 'https://keymaster-8wy8.onrender.com',
         changeOrigin: true,
         secure: false
       },
